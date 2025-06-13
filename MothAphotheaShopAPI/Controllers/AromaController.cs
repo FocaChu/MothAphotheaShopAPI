@@ -6,12 +6,12 @@ namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class AromaController : ControllerBase
     {
         private readonly Db _context;
         private readonly IMapper _mapper;
 
-        public ProductController(Db context, IMapper mapper)
+        public AromaController(Db context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
