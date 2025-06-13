@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MothAphotheaShopAPI
+{
+    public class ContraindicationDTO
+    {
+        [Required]
+        public string Name { get; set; }
+
+
+        [Required]
+        public string Description { get; set; }
+    }
+}

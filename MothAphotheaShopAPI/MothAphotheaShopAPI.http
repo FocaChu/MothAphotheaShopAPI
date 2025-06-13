@@ -1,0 +1,6 @@
+@MothAphotheaShopAPI_HostAddress = http://localhost:5031
+
+GET {{MothAphotheaShopAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
