@@ -56,7 +56,7 @@ namespace MothAphotheaShopAPI
                 .ForMember(dest => dest.TexturesIds, opt => opt.Ignore())
                 .ForMember(dest => dest.FlavorsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.EffectsIds, opt => opt.Ignore())
-                .ForMember(dest => dest.WarningsIds, opt => opt.Ignore());
+                .ForMember(dest => dest.ContraindicationsIds, opt => opt.Ignore());
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.IngredientList, opt => opt.Ignore())
                 .ForMember(dest => dest.Type, opt => opt.Ignore())

@@ -52,6 +52,6 @@ namespace MothAphotheaShopAPI
         public List<int> FlavorsIds { get; set; } = new List<int>();
 
 
-        public List<int> WarningsIds { get; set; } = new List<int>();
+        public List<int> ContraindicationsIds { get; set; } = new List<int>();
     }
 }
