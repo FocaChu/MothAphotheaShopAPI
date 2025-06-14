@@ -26,5 +26,8 @@ namespace MothAphotheaShopAPI
 
         [JsonIgnore]
         public ICollection<Product> Products { get; set; } = new List<Product>();
+
+        [JsonIgnore]
+        public ICollection<Effect> Effects { get; set; } = new List<Effect>();
     }
 }

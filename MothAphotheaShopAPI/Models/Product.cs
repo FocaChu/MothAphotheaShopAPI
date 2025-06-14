@@ -13,7 +13,6 @@ namespace MothAphotheaShopAPI
         public string Name { get; set; }
 
 
-        [Required]
         [JsonPropertyName("type")]
         public ProductType Type { get; set; }
 
@@ -41,6 +40,10 @@ namespace MothAphotheaShopAPI
         public ICollection<Ingredient> IngredientList { get; set; } = new List<Ingredient>();
 
 
+        [JsonPropertyName("active_compounds")]
+        public ICollection<ActiveCompound> ActiveCompounds { get; set; } = new List<ActiveCompound>();
+
+
         [JsonPropertyName("aromas")]
         public ICollection<Aroma> Aromas { get; set; } = new List<Aroma>();
 
@@ -52,7 +55,7 @@ namespace MothAphotheaShopAPI
         [JsonPropertyName("effect_list")]
         public ICollection<Effect> Effects { get; set; } = new List<Effect>();
 
-
+       
         [JsonPropertyName("flavor_notes")]
         public ICollection<FlavorNote> FlavorNotes { get; set; } = new List<FlavorNote>();
 

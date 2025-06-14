@@ -19,13 +19,58 @@ namespace MothAphotheaShopAPI.Migrations
                 .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("ActiveCompoundEffect", b =>
+                {
+                    b.Property<int>("ActiveCompoundsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EffectsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActiveCompoundsId", "EffectsId");
+
+                    b.HasIndex("EffectsId");
+
+                    b.ToTable("ActiveCompoundEffect");
+                });
+
+            modelBuilder.Entity("ActiveCompoundIngredient", b =>
+                {
+                    b.Property<int>("ActiveCompoundsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActiveCompoundsId", "IngredientsId");
+
+                    b.HasIndex("IngredientsId");
+
+                    b.ToTable("ActiveCompoundIngredient");
+                });
+
+            modelBuilder.Entity("ActiveCompoundProduct", b =>
+                {
+                    b.Property<int>("ActiveCompoundsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActiveCompoundsId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("ActiveCompoundProduct");
+                });
+
             modelBuilder.Entity("AromaIngredient", b =>
                 {
                     b.Property<int>("AromasId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
                     b.HasKey("AromasId", "IngredientsId");
 
@@ -51,8 +96,8 @@ namespace MothAphotheaShopAPI.Migrations
 
             modelBuilder.Entity("ContraindicationIngredient", b =>
                 {
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarningsId")
                         .HasColumnType("int");
@@ -84,8 +129,8 @@ namespace MothAphotheaShopAPI.Migrations
                     b.Property<int>("EffectsId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
                     b.HasKey("EffectsId", "IngredientsId");
 
@@ -114,8 +159,8 @@ namespace MothAphotheaShopAPI.Migrations
                     b.Property<int>("FlavorProfileId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
                     b.HasKey("FlavorProfileId", "IngredientsId");
 
@@ -141,8 +186,8 @@ namespace MothAphotheaShopAPI.Migrations
 
             modelBuilder.Entity("IngredientTexture", b =>
                 {
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TexturesId")
                         .HasColumnType("int");
@@ -168,16 +213,11 @@ namespace MothAphotheaShopAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("EffectId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EffectId");
 
                     b.ToTable("ActiveCompounds");
                 });
@@ -260,11 +300,8 @@ namespace MothAphotheaShopAPI.Migrations
 
             modelBuilder.Entity("MothAphotheaShopAPI.Ingredient", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int?>("ActiveCompoundId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -290,8 +327,6 @@ namespace MothAphotheaShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActiveCompoundId");
-
                     b.HasIndex("ProductId");
 
                     b.HasIndex("TypeId");
@@ -309,7 +344,8 @@ namespace MothAphotheaShopAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.HasKey("Id");
 
@@ -322,9 +358,6 @@ namespace MothAphotheaShopAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ActiveCompoundId")
                         .HasColumnType("int");
 
                     b.Property<int>("CaffeineLevel")
@@ -355,8 +388,6 @@ namespace MothAphotheaShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActiveCompoundId");
-
                     b.HasIndex("TypeId");
 
                     b.ToTable("Products");
@@ -370,7 +401,8 @@ namespace MothAphotheaShopAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.HasKey("Id");
 
@@ -411,6 +443,51 @@ namespace MothAphotheaShopAPI.Migrations
                     b.HasIndex("TexturesId");
 
                     b.ToTable("ProductTexture");
+                });
+
+            modelBuilder.Entity("ActiveCompoundEffect", b =>
+                {
+                    b.HasOne("MothAphotheaShopAPI.ActiveCompound", null)
+                        .WithMany()
+                        .HasForeignKey("ActiveCompoundsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MothAphotheaShopAPI.Effect", null)
+                        .WithMany()
+                        .HasForeignKey("EffectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ActiveCompoundIngredient", b =>
+                {
+                    b.HasOne("MothAphotheaShopAPI.ActiveCompound", null)
+                        .WithMany()
+                        .HasForeignKey("ActiveCompoundsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MothAphotheaShopAPI.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ActiveCompoundProduct", b =>
+                {
+                    b.HasOne("MothAphotheaShopAPI.ActiveCompound", null)
+                        .WithMany()
+                        .HasForeignKey("ActiveCompoundsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MothAphotheaShopAPI.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AromaIngredient", b =>
@@ -548,25 +625,14 @@ namespace MothAphotheaShopAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MothAphotheaShopAPI.ActiveCompound", b =>
-                {
-                    b.HasOne("MothAphotheaShopAPI.Effect", null)
-                        .WithMany("ActiveCompounds")
-                        .HasForeignKey("EffectId");
-                });
-
             modelBuilder.Entity("MothAphotheaShopAPI.Ingredient", b =>
                 {
-                    b.HasOne("MothAphotheaShopAPI.ActiveCompound", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("ActiveCompoundId");
-
                     b.HasOne("MothAphotheaShopAPI.Product", null)
                         .WithMany("IngredientList")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("MothAphotheaShopAPI.IngredientType", "Type")
-                        .WithMany()
+                        .WithMany("Ingredients")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -576,10 +642,6 @@ namespace MothAphotheaShopAPI.Migrations
 
             modelBuilder.Entity("MothAphotheaShopAPI.Product", b =>
                 {
-                    b.HasOne("MothAphotheaShopAPI.ActiveCompound", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ActiveCompoundId");
-
                     b.HasOne("MothAphotheaShopAPI.ProductType", "Type")
                         .WithMany("Products")
                         .HasForeignKey("TypeId")
@@ -604,16 +666,9 @@ namespace MothAphotheaShopAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MothAphotheaShopAPI.ActiveCompound", b =>
+            modelBuilder.Entity("MothAphotheaShopAPI.IngredientType", b =>
                 {
                     b.Navigation("Ingredients");
-
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("MothAphotheaShopAPI.Effect", b =>
-                {
-                    b.Navigation("ActiveCompounds");
                 });
 
             modelBuilder.Entity("MothAphotheaShopAPI.Product", b =>

@@ -1,20 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MothAphotheaShopAPI.Controllers;
 
 namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlavorNoteController : ControllerBase
+    public class FlavorNoteController : GenericController<FlavorNote, FlavorNoteDTO>
     {
-        private readonly Db _context;
-        private readonly IMapper _mapper;
-
-        public FlavorNoteController(Db context, IMapper mapper)
+        public FlavorNoteController(IGenericService<FlavorNote, FlavorNoteDTO> service)
+            : base(service)
         {
-            _context = context;
-            _mapper = mapper;
         }
     }
 }

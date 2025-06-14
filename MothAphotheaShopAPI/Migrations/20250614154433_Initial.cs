@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -13,6 +12,25 @@ namespace MothAphotheaShopAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ActiveCompounds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ChemicalFormula = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActiveCompounds", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -131,27 +149,27 @@ namespace MothAphotheaShopAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ActiveCompounds",
+                name: "ActiveCompoundEffect",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ChemicalFormula = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EffectId = table.Column<int>(type: "int", nullable: true)
+                    ActiveCompoundsId = table.Column<int>(type: "int", nullable: false),
+                    EffectsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActiveCompounds", x => x.Id);
+                    table.PrimaryKey("PK_ActiveCompoundEffect", x => new { x.ActiveCompoundsId, x.EffectsId });
                     table.ForeignKey(
-                        name: "FK_ActiveCompounds_Effects_EffectId",
-                        column: x => x.EffectId,
+                        name: "FK_ActiveCompoundEffect_ActiveCompounds_ActiveCompoundsId",
+                        column: x => x.ActiveCompoundsId,
+                        principalTable: "ActiveCompounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundEffect_Effects_EffectsId",
+                        column: x => x.EffectsId,
                         principalTable: "Effects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -169,21 +187,40 @@ namespace MothAphotheaShopAPI.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CaffeineLevel = table.Column<int>(type: "int", nullable: false),
                     Preparation = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ActiveCompoundId = table.Column<int>(type: "int", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_ActiveCompounds_ActiveCompoundId",
-                        column: x => x.ActiveCompoundId,
-                        principalTable: "ActiveCompounds",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Products_productTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "productTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ActiveCompoundProduct",
+                columns: table => new
+                {
+                    ActiveCompoundsId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActiveCompoundProduct", x => new { x.ActiveCompoundsId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundProduct_ActiveCompounds_ActiveCompoundsId",
+                        column: x => x.ActiveCompoundsId,
+                        principalTable: "ActiveCompounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -293,7 +330,8 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "Ingredients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TypeId = table.Column<int>(type: "int", nullable: false),
@@ -301,17 +339,11 @@ namespace MothAphotheaShopAPI.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ActiveCompoundId = table.Column<int>(type: "int", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_ActiveCompounds_ActiveCompoundId",
-                        column: x => x.ActiveCompoundId,
-                        principalTable: "ActiveCompounds",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Ingredients_IngredientTypes_TypeId",
                         column: x => x.TypeId,
@@ -352,11 +384,36 @@ namespace MothAphotheaShopAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ActiveCompoundIngredient",
+                columns: table => new
+                {
+                    ActiveCompoundsId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActiveCompoundIngredient", x => new { x.ActiveCompoundsId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundIngredient_ActiveCompounds_ActiveCompoundsId",
+                        column: x => x.ActiveCompoundsId,
+                        principalTable: "ActiveCompounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "AromaIngredient",
                 columns: table => new
                 {
                     AromasId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -380,7 +437,7 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "ContraindicationIngredient",
                 columns: table => new
                 {
-                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false),
                     WarningsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -406,7 +463,7 @@ namespace MothAphotheaShopAPI.Migrations
                 columns: table => new
                 {
                     EffectsId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -431,7 +488,7 @@ namespace MothAphotheaShopAPI.Migrations
                 columns: table => new
                 {
                     FlavorProfileId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -455,7 +512,7 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "IngredientTexture",
                 columns: table => new
                 {
-                    IngredientsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false),
                     TexturesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -477,9 +534,19 @@ namespace MothAphotheaShopAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActiveCompounds_EffectId",
-                table: "ActiveCompounds",
-                column: "EffectId");
+                name: "IX_ActiveCompoundEffect_EffectsId",
+                table: "ActiveCompoundEffect",
+                column: "EffectsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActiveCompoundIngredient_IngredientsId",
+                table: "ActiveCompoundIngredient",
+                column: "IngredientsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActiveCompoundProduct_ProductsId",
+                table: "ActiveCompoundProduct",
+                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AromaIngredient_IngredientsId",
@@ -522,11 +589,6 @@ namespace MothAphotheaShopAPI.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_ActiveCompoundId",
-                table: "Ingredients",
-                column: "ActiveCompoundId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_ProductId",
                 table: "Ingredients",
                 column: "ProductId");
@@ -542,11 +604,6 @@ namespace MothAphotheaShopAPI.Migrations
                 column: "TexturesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_ActiveCompoundId",
-                table: "Products",
-                column: "ActiveCompoundId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_TypeId",
                 table: "Products",
                 column: "TypeId");
@@ -560,6 +617,15 @@ namespace MothAphotheaShopAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ActiveCompoundEffect");
+
+            migrationBuilder.DropTable(
+                name: "ActiveCompoundIngredient");
+
+            migrationBuilder.DropTable(
+                name: "ActiveCompoundProduct");
+
             migrationBuilder.DropTable(
                 name: "AromaIngredient");
 
@@ -591,10 +657,16 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "ProductTexture");
 
             migrationBuilder.DropTable(
+                name: "ActiveCompounds");
+
+            migrationBuilder.DropTable(
                 name: "Aromas");
 
             migrationBuilder.DropTable(
                 name: "Contraindications");
+
+            migrationBuilder.DropTable(
+                name: "Effects");
 
             migrationBuilder.DropTable(
                 name: "FlavorNotes");
@@ -612,13 +684,7 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "ActiveCompounds");
-
-            migrationBuilder.DropTable(
                 name: "productTypes");
-
-            migrationBuilder.DropTable(
-                name: "Effects");
         }
     }
 }

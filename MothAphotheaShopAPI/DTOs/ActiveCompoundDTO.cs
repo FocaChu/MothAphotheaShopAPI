@@ -2,7 +2,7 @@
 
 namespace MothAphotheaShopAPI
 {
-    public class ActitveCompoundDTO
+    public class ActiveCompoundDTO
     {
         [Required]
         public string Name { get; set; }

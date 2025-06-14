@@ -1,20 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MothAphotheaShopAPI.Controllers;
 
-namespace MothAphotheaShopAPI.Controllers
+namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TextureController : ControllerBase
+    public class TextureController : GenericController<Texture, TextureDTO>
     {
-        private readonly Db _context;
-        private readonly IMapper _mapper;
-
-        public TextureController(Db context, IMapper mapper)
+        public TextureController(IGenericService<Texture, TextureDTO> service)
+            : base(service)
         {
-            _context = context;
-            _mapper = mapper;
         }
     }
 }

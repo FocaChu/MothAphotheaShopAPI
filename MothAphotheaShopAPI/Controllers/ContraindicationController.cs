@@ -1,20 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MothAphotheaShopAPI.Controllers;
 
 namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContraindicationController : ControllerBase
+    public class ContraindicationController : GenericController<Contraindication, ContraindicationDTO>
     {
-        private readonly Db _context;
-        private readonly IMapper _mapper;
-
-        public ContraindicationController(Db context, IMapper mapper)
+        public ContraindicationController(IGenericService<Contraindication, ContraindicationDTO> service)
+            : base(service)
         {
-            _context = context;
-            _mapper = mapper;
         }
     }
 }

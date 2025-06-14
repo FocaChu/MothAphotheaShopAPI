@@ -9,6 +9,7 @@ namespace MothAphotheaShopAPI
 
 
         [Required]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
 

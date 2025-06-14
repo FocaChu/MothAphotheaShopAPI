@@ -1,20 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MothAphotheaShopAPI.Controllers;
 
 namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ActiveCompoundController : ControllerBase
+    public class ActiveCompoundController : GenericController<ActiveCompound, ActiveCompoundDTO>
     {
-        private readonly Db _context;
-        private readonly IMapper _mapper;
-
-        public ActiveCompoundController(Db context, IMapper mapper)
+        public ActiveCompoundController(IGenericService<ActiveCompound, ActiveCompoundDTO> service)
+            : base(service)
         {
-            _context = context;
-            _mapper = mapper;
         }
     }
+
 }

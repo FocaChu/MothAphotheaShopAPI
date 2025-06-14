@@ -1,20 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MothAphotheaShopAPI.Controllers;
 
 namespace MothAphotheaShopAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IngredientTypeController : ControllerBase
+    public class IngredientTypeController : GenericController<IngredientType, IngredientTypeDTO>
     {
-        private readonly Db _context;
-        private readonly IMapper _mapper;
-
-        public IngredientTypeController(Db context, IMapper mapper)
+        public IngredientTypeController(IGenericService<IngredientType, IngredientTypeDTO> service)
+            : base(service)
         {
-            _context = context;
-            _mapper = mapper;
         }
     }
 }

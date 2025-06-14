@@ -11,8 +11,8 @@ namespace MothAphotheaShopAPI
 
 
         [Required]
-        [JsonPropertyName("type")]
-        public ProductType Type { get; set; }
+        [JsonPropertyName("typeId")]
+        public int TypeId { get; set; }
 
 
         [Required]
@@ -35,6 +35,15 @@ namespace MothAphotheaShopAPI
 
 
         public List<int> IngridientsIds { get; set; } = new List<int>();
+
+
+        public List<int> ActiveCompoundsIds { get; set; } = new List<int>();
+
+
+        public List<int> AromasIds { get; set; } = new List<int>();
+
+
+        public List<int> TexturesIds { get; set; } = new List<int>();
 
 
         public List<int> EffectsIds { get; set; } = new List<int>();
