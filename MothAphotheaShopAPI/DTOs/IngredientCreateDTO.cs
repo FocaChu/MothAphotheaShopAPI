@@ -38,6 +38,6 @@ namespace MothAphotheaShopAPI
         public List<int> EffectsIds { get; set; } = new List<int>();
 
 
-        public List<int> WarningsIds { get; set; } = new List<int>();
+        public List<int> ContraindicationingsIds { get; set; } = new List<int>();
     }
 }

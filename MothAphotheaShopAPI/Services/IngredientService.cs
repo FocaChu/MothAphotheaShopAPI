@@ -76,8 +76,8 @@ namespace MothAphotheaShopAPI
                 ingredient.FlavorProfile = await GetAndValidateEntitiesAsync<FlavorNote>(dto.FlavorsIds, "Flavor");
 
 
-            if (dto.WarningsIds?.Any() == true)
-                ingredient.Contraindications = await GetAndValidateEntitiesAsync<Contraindication>(dto.WarningsIds, "Contraindications");
+            if (dto.ContraindicationingsIds?.Any() == true)
+                ingredient.Contraindications = await GetAndValidateEntitiesAsync<Contraindication>(dto.ContraindicationingsIds, "Contraindications");
 
 
             _context.Ingredients.Add(ingredient);
@@ -88,26 +88,51 @@ namespace MothAphotheaShopAPI
 
         public async Task<Ingredient?> UpdateAsync(int id, IngredientCreateDTO dto)
         {
-            var existingIngredient = await _context.Ingredients.FindAsync(id);
-
-            if (existingIngredient == null) return null;
-
-            _mapper.Map(dto, existingIngredient);
-
-            await _context.SaveChangesAsync();
-            return existingIngredient;
-        }
-
-        public async Task<Product?> UpdateSimpleAsync(int id, IngredientCreateDTO dto)
-        {
-            var existingIngredient = await _context.Products
-                .Include(p => p.Type) // Se Type for uma navegação
+            var existingIngredient = await _context.Ingredients
+                .Include(p => p.ActiveCompounds)
+                .Include(p => p.Aromas)
+                .Include(p => p.Textures)
+                .Include(p => p.Effects)
+                .Include(p => p.FlavorProfile)
+                .Include(p => p.Contraindications)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (existingIngredient == null)
                 return null;
 
-            var type = await _context.productTypes.FindAsync(dto.TypeId);
+            var type = await _context.IngredientTypes.FindAsync(dto.TypeId);
+            if (type == null)
+                throw new BusinessException("Ingredient type not found.");
+
+            _mapper.Map(dto, existingIngredient);
+            existingIngredient.Type = type;
+
+            existingIngredient.ActiveCompounds = await GetAndValidateEntitiesAsync<ActiveCompound>(dto.ActiveCompoundsIds, "Active Compound");
+
+            existingIngredient.Aromas = await GetAndValidateEntitiesAsync<Aroma>(dto.AromasIds, "Aroma");
+
+            existingIngredient.Textures = await GetAndValidateEntitiesAsync<Texture>(dto.TexturesIds, "Texture");
+
+            existingIngredient.Effects = await GetAndValidateEntitiesAsync<Effect>(dto.EffectsIds, "Effect");
+
+            existingIngredient.FlavorProfile = await GetAndValidateEntitiesAsync<FlavorNote>(dto.FlavorsIds, "Flavor");
+
+            existingIngredient.Contraindications = await GetAndValidateEntitiesAsync<Contraindication>(dto.ContraindicationingsIds, "Contraindication");
+
+            await _context.SaveChangesAsync();
+            return existingIngredient;
+        }
+
+        public async Task<Ingredient?> UpdateSimpleAsync(int id, IngredientCreateDTO dto)
+        {
+            var existingIngredient = await _context.Ingredients
+                .Include(p => p.Type) 
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (existingIngredient == null)
+                return null;
+
+            var type = await _context.IngredientTypes.FindAsync(dto.TypeId);
             if (type == null)
                 throw new BusinessException("Ingredient type not found.");
 
@@ -118,100 +143,100 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Product?> UpdateActiveCompoundsAsync(int id, List<int> activeCompoundsIds)
+        public async Task<Ingredient?> UpdateActiveCompoundsAsync(int id, List<int> activeCompoundsIds)
         {
-            var existingProduct = await _context.Products
+            var existingIngredient = await _context.Ingredients
                 .Include(p => p.ActiveCompounds)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var activeCompoundsList = await GetAndValidateEntitiesAsync<ActiveCompound>(activeCompoundsIds, "Active Compound");
-            existingProduct.ActiveCompounds = activeCompoundsList;
+            existingIngredient.ActiveCompounds = activeCompoundsList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
-        public async Task<Product?> UpdateAromasAsync(int id, List<int> aromasIds)
+        public async Task<Ingredient?> UpdateAromasAsync(int id, List<int> aromasIds)
         {
-            var existingProduct = await _context.Products
+            var existingIngredient = await _context.Ingredients
                 .Include(p => p.Aromas)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var aromasList = await GetAndValidateEntitiesAsync<Aroma>(aromasIds, "Aroma");
-            existingProduct.Aromas = aromasList;
+            existingIngredient.Aromas = aromasList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
-        public async Task<Product?> UpdateTexturesAsync(int id, List<int> texturesIds)
+        public async Task<Ingredient?> UpdateTexturesAsync(int id, List<int> texturesIds)
         {
-            var existingProduct = await _context.Products
+            var existingIngredient = await _context.Ingredients
                 .Include(p => p.Textures)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var texturesList = await GetAndValidateEntitiesAsync<Texture>(texturesIds, "Texture");
-            existingProduct.Textures = texturesList;
+            existingIngredient.Textures = texturesList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
-        public async Task<Product?> UpdateEffectsAsync(int id, List<int> effectsIds)
+        public async Task<Ingredient?> UpdateEffectsAsync(int id, List<int> effectsIds)
         {
-            var existingProduct = await _context.Products
+            var existingIngredient = await _context.Ingredients
                 .Include(p => p.Effects)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var effectsList = await GetAndValidateEntitiesAsync<Effect>(effectsIds, "Effect");
-            existingProduct.Effects = effectsList;
+            existingIngredient.Effects = effectsList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
-        public async Task<Product?> UpdateFlavorNotesAsync(int id, List<int> flavorNotesIds)
+        public async Task<Ingredient?> UpdateFlavorNotesAsync(int id, List<int> flavorNotesIds)
         {
-            var existingProduct = await _context.Products
-                .Include(p => p.FlavorNotes)
+            var existingIngredient = await _context.Ingredients
+                .Include(p => p.FlavorProfile)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var flavorsList = await GetAndValidateEntitiesAsync<FlavorNote>(flavorNotesIds, "Flavor");
-            existingProduct.FlavorNotes = flavorsList;
+            existingIngredient.FlavorProfile = flavorsList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
-        public async Task<Product?> UpdateContraindicationsAsync(int id, List<int> contraindicationsIds)
+        public async Task<Ingredient?> UpdateContraindicationsAsync(int id, List<int> contraindicationsIds)
         {
-            var existingProduct = await _context.Products
+            var existingIngredient = await _context.Ingredients
                 .Include(p => p.Contraindications)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (existingProduct == null)
+            if (existingIngredient == null)
                 return null;
 
             var contraindicationsList = await GetAndValidateEntitiesAsync<Contraindication>(contraindicationsIds, "Contraindication");
-            existingProduct.Contraindications = contraindicationsList;
+            existingIngredient.Contraindications = contraindicationsList;
 
             await _context.SaveChangesAsync();
-            return existingProduct;
+            return existingIngredient;
         }
 
         public async Task<bool> DeleteAsync(int id)
