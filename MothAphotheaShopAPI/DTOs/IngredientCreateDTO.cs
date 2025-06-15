@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MothAphotheaShopAPI
 {
-    public class IngredientDTO
+    public class IngredientCreateDTO
     {
         [Required]
         [JsonPropertyName("name")]

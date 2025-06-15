@@ -54,7 +54,11 @@ namespace MothAphotheaShopAPI
 
         [JsonIgnore]
         [JsonPropertyName("warnings")]
-        public ICollection<Contraindication> Warnings { get; set; } = new List<Contraindication>();
+        public ICollection<Contraindication> Contraindications { get; set; } = new List<Contraindication>();
+
+        [JsonIgnore]
+        [JsonPropertyName("products")]
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 
 

@@ -31,7 +31,42 @@ namespace MothAphotheaShopAPI
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Db).Assembly);
+
+            // Ingredient ↔️ Aroma (Many-to-Many)
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.Aromas)
+                .WithMany(a => a.Ingredients);
+
+            // Ingredient ↔️ Texture
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.Textures)
+                .WithMany(t => t.Ingredients);
+
+            // Ingredient ↔️ FlavorNote
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.FlavorProfile)
+                .WithMany(f => f.Ingredients);
+
+            // Ingredient ↔️ Effect
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.Effects)
+                .WithMany(e => e.Ingredients);
+
+            // Ingredient ↔️ Contraindication
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.Contraindications)
+                .WithMany(c => c.Ingredients);
+
+            // Ingredient ↔️ ActiveCompound
+            modelBuilder.Entity<Ingredient>()
+                .HasMany(i => i.ActiveCompounds)
+                .WithMany(ac => ac.Ingredients);
+
+            // Product ↔️ Ingredient (Many-to-Many)
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.IngredientList)
+                .WithMany(i => i.Products);
         }
+
     }
 }

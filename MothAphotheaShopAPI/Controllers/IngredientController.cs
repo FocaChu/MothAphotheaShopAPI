@@ -38,7 +38,7 @@ namespace MothAphotheaShopAPI
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] IngredientDTO dto)
+        public async Task<IActionResult> Create([FromBody] IngredientCreateDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -47,7 +47,7 @@ namespace MothAphotheaShopAPI
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] IngredientDTO dto)
+        public async Task<IActionResult> Update(int id, [FromBody] IngredientCreateDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

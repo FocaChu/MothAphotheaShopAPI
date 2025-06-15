@@ -20,7 +20,7 @@ namespace MothAphotheaShopAPI
             {
                 await _next(context);
             }
-            catch (BusinessException ex) 
+            catch (BusinessException ex)
             {
                 _logger.LogWarning(ex, "Erro de negócio");
                 await HandleExceptionAsync(context, ex.Message, HttpStatusCode.BadRequest);

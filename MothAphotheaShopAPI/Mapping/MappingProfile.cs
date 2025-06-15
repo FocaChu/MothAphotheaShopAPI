@@ -26,7 +26,7 @@ namespace MothAphotheaShopAPI
             CreateMap<FlavorNoteDTO, FlavorNote>();
 
 
-            CreateMap<Ingredient, IngredientDTO>()
+            CreateMap<Ingredient, IngredientCreateDTO>()
                 .ForMember(dest => dest.TypeId, opt => opt.Ignore())
                 .ForMember(dest => dest.ActiveCompoundsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.AromasIds, opt => opt.Ignore())
@@ -34,14 +34,33 @@ namespace MothAphotheaShopAPI
                 .ForMember(dest => dest.FlavorsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.EffectsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.WarningsIds, opt => opt.Ignore());
-            CreateMap<IngredientDTO, Ingredient>()
+            CreateMap<IngredientCreateDTO, Ingredient>()
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
                 .ForMember(dest => dest.ActiveCompounds, opt => opt.Ignore())
                 .ForMember(dest => dest.Aromas, opt => opt.Ignore())
                 .ForMember(dest => dest.Textures, opt => opt.Ignore())
                 .ForMember(dest => dest.FlavorProfile, opt => opt.Ignore())
                 .ForMember(dest => dest.Effects, opt => opt.Ignore())
-                .ForMember(dest => dest.Warnings, opt => opt.Ignore());
+                .ForMember(dest => dest.Contraindications, opt => opt.Ignore());
+
+
+            CreateMap<Ingredient, IngredientViewDTO>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.ActiveCompounds, opt => opt.MapFrom(src => src.ActiveCompounds))
+                .ForMember(dest => dest.Aromas, opt => opt.MapFrom(src => src.Aromas))
+                .ForMember(dest => dest.Textures, opt => opt.MapFrom(src => src.Textures))
+                .ForMember(dest => dest.Flavors, opt => opt.MapFrom(src => src.FlavorProfile))
+                .ForMember(dest => dest.Effects, opt => opt.MapFrom(src => src.Effects))
+                .ForMember(dest => dest.Contraindications, opt => opt.MapFrom(src => src.Contraindications));
+            CreateMap<IngredientViewDTO, Ingredient>()
+                .ForMember(dest => dest.Type, opt => opt.Ignore())
+                .ForMember(dest => dest.ActiveCompounds, opt => opt.Ignore())
+                .ForMember(dest => dest.Aromas, opt => opt.Ignore())
+                .ForMember(dest => dest.Textures, opt => opt.Ignore())
+                .ForMember(dest => dest.FlavorProfile, opt => opt.Ignore())
+                .ForMember(dest => dest.Effects, opt => opt.Ignore())
+                .ForMember(dest => dest.Contraindications, opt => opt.Ignore());
+
 
 
             CreateMap<IngredientType, IngredientTypeDTO>();

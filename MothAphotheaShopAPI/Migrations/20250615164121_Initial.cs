@@ -174,6 +174,32 @@ namespace MothAphotheaShopAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    ScientificName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_IngredientTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "IngredientTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -196,6 +222,156 @@ namespace MothAphotheaShopAPI.Migrations
                         name: "FK_Products_productTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "productTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ActiveCompoundIngredient",
+                columns: table => new
+                {
+                    ActiveCompoundsId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActiveCompoundIngredient", x => new { x.ActiveCompoundsId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundIngredient_ActiveCompounds_ActiveCompoundsId",
+                        column: x => x.ActiveCompoundsId,
+                        principalTable: "ActiveCompounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActiveCompoundIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AromaIngredient",
+                columns: table => new
+                {
+                    AromasId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AromaIngredient", x => new { x.AromasId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_AromaIngredient_Aromas_AromasId",
+                        column: x => x.AromasId,
+                        principalTable: "Aromas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AromaIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ContraindicationIngredient",
+                columns: table => new
+                {
+                    ContraindicationsId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContraindicationIngredient", x => new { x.ContraindicationsId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_ContraindicationIngredient_Contraindications_Contraindicatio~",
+                        column: x => x.ContraindicationsId,
+                        principalTable: "Contraindications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContraindicationIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "EffectIngredient",
+                columns: table => new
+                {
+                    EffectsId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EffectIngredient", x => new { x.EffectsId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_EffectIngredient_Effects_EffectsId",
+                        column: x => x.EffectsId,
+                        principalTable: "Effects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EffectIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "FlavorNoteIngredient",
+                columns: table => new
+                {
+                    FlavorProfileId = table.Column<int>(type: "int", nullable: false),
+                    IngredientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlavorNoteIngredient", x => new { x.FlavorProfileId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_FlavorNoteIngredient_FlavorNotes_FlavorProfileId",
+                        column: x => x.FlavorProfileId,
+                        principalTable: "FlavorNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FlavorNoteIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "IngredientTexture",
+                columns: table => new
+                {
+                    IngredientsId = table.Column<int>(type: "int", nullable: false),
+                    TexturesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientTexture", x => new { x.IngredientsId, x.TexturesId });
+                    table.ForeignKey(
+                        name: "FK_IngredientTexture_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientTexture_Textures_TexturesId",
+                        column: x => x.TexturesId,
+                        principalTable: "Textures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -327,34 +503,27 @@ namespace MothAphotheaShopAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Ingredients",
+                name: "IngredientProduct",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    ScientificName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    IngredientListId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.PrimaryKey("PK_IngredientProduct", x => new { x.IngredientListId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_Ingredients_IngredientTypes_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "IngredientTypes",
+                        name: "FK_IngredientProduct_Ingredients_IngredientListId",
+                        column: x => x.IngredientListId,
+                        principalTable: "Ingredients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_IngredientProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -376,156 +545,6 @@ namespace MothAphotheaShopAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductTexture_Textures_TexturesId",
-                        column: x => x.TexturesId,
-                        principalTable: "Textures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ActiveCompoundIngredient",
-                columns: table => new
-                {
-                    ActiveCompoundsId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActiveCompoundIngredient", x => new { x.ActiveCompoundsId, x.IngredientsId });
-                    table.ForeignKey(
-                        name: "FK_ActiveCompoundIngredient_ActiveCompounds_ActiveCompoundsId",
-                        column: x => x.ActiveCompoundsId,
-                        principalTable: "ActiveCompounds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ActiveCompoundIngredient_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "AromaIngredient",
-                columns: table => new
-                {
-                    AromasId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AromaIngredient", x => new { x.AromasId, x.IngredientsId });
-                    table.ForeignKey(
-                        name: "FK_AromaIngredient_Aromas_AromasId",
-                        column: x => x.AromasId,
-                        principalTable: "Aromas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AromaIngredient_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ContraindicationIngredient",
-                columns: table => new
-                {
-                    IngredientsId = table.Column<int>(type: "int", nullable: false),
-                    WarningsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContraindicationIngredient", x => new { x.IngredientsId, x.WarningsId });
-                    table.ForeignKey(
-                        name: "FK_ContraindicationIngredient_Contraindications_WarningsId",
-                        column: x => x.WarningsId,
-                        principalTable: "Contraindications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ContraindicationIngredient_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "EffectIngredient",
-                columns: table => new
-                {
-                    EffectsId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EffectIngredient", x => new { x.EffectsId, x.IngredientsId });
-                    table.ForeignKey(
-                        name: "FK_EffectIngredient_Effects_EffectsId",
-                        column: x => x.EffectsId,
-                        principalTable: "Effects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EffectIngredient_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "FlavorNoteIngredient",
-                columns: table => new
-                {
-                    FlavorProfileId = table.Column<int>(type: "int", nullable: false),
-                    IngredientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FlavorNoteIngredient", x => new { x.FlavorProfileId, x.IngredientsId });
-                    table.ForeignKey(
-                        name: "FK_FlavorNoteIngredient_FlavorNotes_FlavorProfileId",
-                        column: x => x.FlavorProfileId,
-                        principalTable: "FlavorNotes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FlavorNoteIngredient_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "IngredientTexture",
-                columns: table => new
-                {
-                    IngredientsId = table.Column<int>(type: "int", nullable: false),
-                    TexturesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IngredientTexture", x => new { x.IngredientsId, x.TexturesId });
-                    table.ForeignKey(
-                        name: "FK_IngredientTexture_Ingredients_IngredientsId",
-                        column: x => x.IngredientsId,
-                        principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_IngredientTexture_Textures_TexturesId",
                         column: x => x.TexturesId,
                         principalTable: "Textures",
                         principalColumn: "Id",
@@ -559,9 +578,9 @@ namespace MothAphotheaShopAPI.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContraindicationIngredient_WarningsId",
+                name: "IX_ContraindicationIngredient_IngredientsId",
                 table: "ContraindicationIngredient",
-                column: "WarningsId");
+                column: "IngredientsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContraindicationProduct_ProductsId",
@@ -589,9 +608,9 @@ namespace MothAphotheaShopAPI.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_ProductId",
-                table: "Ingredients",
-                column: "ProductId");
+                name: "IX_IngredientProduct_ProductsId",
+                table: "IngredientProduct",
+                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_TypeId",
@@ -651,6 +670,9 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "FlavorNoteProduct");
 
             migrationBuilder.DropTable(
+                name: "IngredientProduct");
+
+            migrationBuilder.DropTable(
                 name: "IngredientTexture");
 
             migrationBuilder.DropTable(
@@ -675,13 +697,13 @@ namespace MothAphotheaShopAPI.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "Textures");
 
             migrationBuilder.DropTable(
                 name: "IngredientTypes");
-
-            migrationBuilder.DropTable(
-                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "productTypes");
