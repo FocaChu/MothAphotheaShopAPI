@@ -22,7 +22,7 @@ namespace MothAphotheaShopAPI
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -37,7 +37,7 @@ namespace MothAphotheaShopAPI
             return entity;
         }
 
-        public async Task<TEntity?> UpdateAsync(int id, TDto dto)
+        public async Task<TEntity?> UpdateAsync(Guid id, TDto dto)
         {
             var entity = await _dbSet.FindAsync(id);
 
@@ -49,7 +49,7 @@ namespace MothAphotheaShopAPI
             return entity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
 

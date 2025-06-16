@@ -24,9 +24,12 @@ namespace MothAphotheaShopAPI
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<ProductType> productTypes { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+
+        public DbSet<Purchase> Purchases { get; set; }
 
         public DbSet<Texture> Textures { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

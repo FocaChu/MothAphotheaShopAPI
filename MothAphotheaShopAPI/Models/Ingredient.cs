@@ -8,7 +8,7 @@ namespace MothAphotheaShopAPI
 
     public class Ingredient
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = new Guid();
 
         [Required]
         [JsonPropertyName("name")]

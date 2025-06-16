@@ -90,6 +90,15 @@ namespace MothAphotheaShopAPI
             CreateMap<ProductType, ProductTypeDTO>();
             CreateMap<ProductTypeDTO, ProductType>();
 
+
+            CreateMap<Purchase, PurchaseDTO>()
+                .ForMember(dest => dest.ProductIds, opt => opt.Ignore())
+                .ForMember(dest => dest.PaymentMethodId, opt => opt.Ignore());
+            CreateMap<PurchaseDTO, Purchase>()
+                .ForMember(dest => dest.Products, opt => opt.Ignore())
+                .ForMember(dest => dest.PaymentMethod, opt => opt.Ignore());
+
+
             CreateMap<Texture, TextureDTO>();
             CreateMap<TextureDTO, Texture>();
 

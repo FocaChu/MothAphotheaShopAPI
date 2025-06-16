@@ -28,7 +28,7 @@ namespace MothAphotheaShopAPI
                 .ToListAsync();
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
             return await _context.Products
                 .Include(p => p.Type)
@@ -45,7 +45,7 @@ namespace MothAphotheaShopAPI
         {
             var product = _mapper.Map<Product>(dto);
 
-            var type = await _context.productTypes.FindAsync(dto.TypeId);
+            var type = await _context.ProductTypes.FindAsync(dto.TypeId);
             if (type == null)
                 throw new BusinessException("Product type not found.");
 
@@ -85,7 +85,7 @@ namespace MothAphotheaShopAPI
             return product;
         }
 
-        public async Task<Product?> UpdateAsync(int id, ProductDTO dto)
+        public async Task<Product?> UpdateAsync(Guid id, ProductDTO dto)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.IngredientList)
@@ -100,7 +100,7 @@ namespace MothAphotheaShopAPI
             if (existingProduct == null)
                 return null;
 
-            var type = await _context.productTypes.FindAsync(dto.TypeId);
+            var type = await _context.ProductTypes.FindAsync(dto.TypeId);
             if (type == null)
                 throw new BusinessException("Product type not found.");
 
@@ -125,7 +125,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateSimpleAsync(int id, ProductDTO dto)
+        public async Task<Product?> UpdateSimpleAsync(Guid id, ProductDTO dto)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.Type) // Se Type for uma navegação
@@ -134,7 +134,7 @@ namespace MothAphotheaShopAPI
             if (existingProduct == null)
                 return null;
 
-            var type = await _context.productTypes.FindAsync(dto.TypeId);
+            var type = await _context.ProductTypes.FindAsync(dto.TypeId);
             if (type == null)
                 throw new BusinessException("Product type not found.");
 
@@ -145,7 +145,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateIngredientsAsync(int id, List<int> ingredientsIds)
+        public async Task<Product?> UpdateIngredientsAsync(Guid id, List<Guid> ingredientsIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.IngredientList)
@@ -161,7 +161,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateActiveCompoundsAsync(int id, List<int> activeCompoundsIds)
+        public async Task<Product?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.ActiveCompounds)
@@ -177,7 +177,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateAromasAsync(int id, List<int> aromasIds)
+        public async Task<Product?> UpdateAromasAsync(Guid id, List<Guid> aromasIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.Aromas)
@@ -193,7 +193,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateTexturesAsync(int id, List<int> texturesIds)
+        public async Task<Product?> UpdateTexturesAsync(Guid id, List<Guid> texturesIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.Textures)
@@ -209,7 +209,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateEffectsAsync(int id, List<int> effectsIds)
+        public async Task<Product?> UpdateEffectsAsync(Guid id, List<Guid> effectsIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.Effects)
@@ -225,7 +225,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateFlavorNotesAsync(int id, List<int> flavorNotesIds)
+        public async Task<Product?> UpdateFlavorNotesAsync(Guid id, List<Guid> flavorNotesIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.FlavorNotes)
@@ -241,7 +241,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<Product?> UpdateContraindicationsAsync(int id, List<int> contraindicationsIds)
+        public async Task<Product?> UpdateContraindicationsAsync(Guid id, List<Guid> contraindicationsIds)
         {
             var existingProduct = await _context.Products
                 .Include(p => p.Contraindications)
@@ -257,7 +257,7 @@ namespace MothAphotheaShopAPI
             return existingProduct;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null) return false;
@@ -267,13 +267,13 @@ namespace MothAphotheaShopAPI
             return true;
         }
 
-        private async Task<List<T>> GetEntitiesByIdsAsync<T>(IEnumerable<int> ids) where T : class
+        private async Task<List<T>> GetEntitiesByIdsAsync<T>(IEnumerable<Guid> ids) where T : class
         {
             var distinctIds = ids.Distinct();
-            return await _context.Set<T>().Where(e => distinctIds.Contains(EF.Property<int>(e, "Id"))).ToListAsync();
+            return await _context.Set<T>().Where(e => distinctIds.Contains(EF.Property<Guid>(e, "Id"))).ToListAsync();
         }
 
-        private async Task<List<T>> GetAndValidateEntitiesAsync<T>(IEnumerable<int> ids, string entityName) where T : class
+        private async Task<List<T>> GetAndValidateEntitiesAsync<T>(IEnumerable<Guid> ids, string entityName) where T : class
         {
             var entities = await GetEntitiesByIdsAsync<T>(ids);
 

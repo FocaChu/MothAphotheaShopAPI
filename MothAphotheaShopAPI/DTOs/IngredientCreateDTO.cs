@@ -12,7 +12,7 @@ namespace MothAphotheaShopAPI
 
         [Required]
         [JsonPropertyName("type")]
-        public int TypeId { get; set; }
+        public Guid TypeId { get; set; }
 
 
         [JsonPropertyName("scientific_name")]
@@ -23,21 +23,21 @@ namespace MothAphotheaShopAPI
         public string Description { get; set; }
 
 
-        public List<int> ActiveCompoundsIds { get; set; } = new List<int>();
+        public List<Guid> ActiveCompoundsIds { get; set; } = new List<Guid>();
 
 
-        public List<int> AromasIds { get; set; } = new List<int>();
+        public List<Guid> AromasIds { get; set; } = new List<Guid>();
 
 
-        public List<int> TexturesIds { get; set; } = new List<int>();
+        public List<Guid> TexturesIds { get; set; } = new List<Guid>();
 
 
-        public List<int> FlavorsIds { get; set; } = new List<int>();
+        public List<Guid> FlavorsIds { get; set; } = new List<Guid>();
 
 
-        public List<int> EffectsIds { get; set; } = new List<int>();
+        public List<Guid> EffectsIds { get; set; } = new List<Guid>();
 
 
-        public List<int> ContraindicationingsIds { get; set; } = new List<int>();
+        public List<Guid> ContraindicationingsIds { get; set; } = new List<Guid>();
     }
 }

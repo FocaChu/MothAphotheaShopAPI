@@ -5,7 +5,7 @@ namespace MothAphotheaShopAPI
 {
     public class Effect
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = new Guid();
 
 
         [Required]

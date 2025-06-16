@@ -4,26 +4,26 @@
     {
         Task<IEnumerable<IngredientViewDTO>> GetAllAsync();
 
-        Task<IngredientViewDTO?> GetByIdAsync(int id);
+        Task<IngredientViewDTO?> GetByIdAsync(Guid id);
 
         Task<Ingredient> CreateAsync(IngredientCreateDTO dto);
 
-        Task<Ingredient?> UpdateAsync(int id, IngredientCreateDTO dto);
+        Task<Ingredient?> UpdateAsync(Guid id, IngredientCreateDTO dto);
 
-        Task<Ingredient?> UpdateSimpleAsync(int id, IngredientCreateDTO dto);
+        Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientCreateDTO dto);
 
-        Task<Ingredient?> UpdateActiveCompoundsAsync(int id, List<int> activeCompoundsIds);
+        Task<Ingredient?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds);
 
-        Task<Ingredient?> UpdateAromasAsync(int id, List<int> aromasIds);
+        Task<Ingredient?> UpdateAromasAsync(Guid id, List<Guid> aromasIds);
 
-        Task<Ingredient?> UpdateTexturesAsync(int id, List<int> texturesIds);
+        Task<Ingredient?> UpdateTexturesAsync(Guid id, List<Guid> texturesIds);
 
-        Task<Ingredient?> UpdateEffectsAsync(int id, List<int> effectsIds);
+        Task<Ingredient?> UpdateEffectsAsync(Guid id, List<Guid> effectsIds);
 
-        Task<Ingredient?> UpdateFlavorNotesAsync(int id, List<int> flavorNotesIds);
+        Task<Ingredient?> UpdateFlavorNotesAsync(Guid id, List<Guid> flavorNotesIds);
 
-        Task<Ingredient?> UpdateContraindicationsAsync(int id, List<int> contraindicationsIds);
+        Task<Ingredient?> UpdateContraindicationsAsync(Guid id, List<Guid> contraindicationsIds);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(Guid id);
     }
 }

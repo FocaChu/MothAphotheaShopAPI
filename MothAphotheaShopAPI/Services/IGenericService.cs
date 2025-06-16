@@ -4,13 +4,13 @@
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task<TEntity?> GetByIdAsync(int id);
+        Task<TEntity?> GetByIdAsync(Guid id);
 
         Task<TEntity> CreateAsync(TDto dto);
 
-        Task<TEntity?> UpdateAsync(int id, TDto dto);
+        Task<TEntity?> UpdateAsync(Guid id, TDto dto);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(Guid id);
     }
 
 }

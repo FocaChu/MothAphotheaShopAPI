@@ -30,7 +30,7 @@ namespace MothAphotheaShopAPI
         }
 
 
-        public async Task<IngredientViewDTO?> GetByIdAsync(int id)
+        public async Task<IngredientViewDTO?> GetByIdAsync(Guid id)
         {
             var ingredient = await _context.Ingredients
                 .Include(i => i.Type)
@@ -52,7 +52,7 @@ namespace MothAphotheaShopAPI
 
             var type = await _context.IngredientTypes.FindAsync(dto.TypeId);
             if (type == null)
-                throw new BusinessException("Product type not found.");
+                throw new BusinessException("Ingredient type not found.");
 
             ingredient.Type = type;
 
@@ -86,7 +86,7 @@ namespace MothAphotheaShopAPI
             return ingredient;
         }
 
-        public async Task<Ingredient?> UpdateAsync(int id, IngredientCreateDTO dto)
+        public async Task<Ingredient?> UpdateAsync(Guid id, IngredientCreateDTO dto)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.ActiveCompounds)
@@ -123,7 +123,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateSimpleAsync(int id, IngredientCreateDTO dto)
+        public async Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientCreateDTO dto)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Type) 
@@ -143,7 +143,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateActiveCompoundsAsync(int id, List<int> activeCompoundsIds)
+        public async Task<Ingredient?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.ActiveCompounds)
@@ -159,7 +159,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateAromasAsync(int id, List<int> aromasIds)
+        public async Task<Ingredient?> UpdateAromasAsync(Guid id, List<Guid> aromasIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Aromas)
@@ -175,7 +175,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateTexturesAsync(int id, List<int> texturesIds)
+        public async Task<Ingredient?> UpdateTexturesAsync(Guid id, List<Guid> texturesIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Textures)
@@ -191,7 +191,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateEffectsAsync(int id, List<int> effectsIds)
+        public async Task<Ingredient?> UpdateEffectsAsync(Guid id, List<Guid> effectsIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Effects)
@@ -207,7 +207,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateFlavorNotesAsync(int id, List<int> flavorNotesIds)
+        public async Task<Ingredient?> UpdateFlavorNotesAsync(Guid id, List<Guid> flavorNotesIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.FlavorProfile)
@@ -223,7 +223,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateContraindicationsAsync(int id, List<int> contraindicationsIds)
+        public async Task<Ingredient?> UpdateContraindicationsAsync(Guid id, List<Guid> contraindicationsIds)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Contraindications)
@@ -239,7 +239,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var ingredient = await _context.Ingredients.FindAsync(id);
             if (ingredient == null) return false;
@@ -249,13 +249,13 @@ namespace MothAphotheaShopAPI
             return true;
         }
 
-        private async Task<List<T>> GetEntitiesByIdsAsync<T>(IEnumerable<int> ids) where T : class
+        private async Task<List<T>> GetEntitiesByIdsAsync<T>(IEnumerable<Guid> ids) where T : class
         {
             var distinctIds = ids.Distinct();
-            return await _context.Set<T>().Where(e => distinctIds.Contains(EF.Property<int>(e, "Id"))).ToListAsync();
+            return await _context.Set<T>().Where(e => distinctIds.Contains(EF.Property<Guid>(e, "Id"))).ToListAsync();
         }
 
-        private async Task<List<T>> GetAndValidateEntitiesAsync<T>(IEnumerable<int> ids, string entityName) where T : class
+        private async Task<List<T>> GetAndValidateEntitiesAsync<T>(IEnumerable<Guid> ids, string entityName) where T : class
         {
             var entities = await GetEntitiesByIdsAsync<T>(ids);
 

@@ -5,7 +5,7 @@ namespace MothAphotheaShopAPI
 {
     public class Product
     {
-        public int Id { get; set; }  // Também gerado pelo banco
+        public Guid Id { get; set; } = new Guid();
 
 
         [Required]
@@ -34,6 +34,9 @@ namespace MothAphotheaShopAPI
 
         [JsonPropertyName("preparation_instructions")]
         public string Preparation { get; set; }
+
+
+        public ICollection<Purchase> Purchase { get; set; } = new List<Purchase>();
 
 
         [JsonPropertyName("ingredient_list")]
