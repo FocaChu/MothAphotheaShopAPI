@@ -3,8 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace MothAphotheaShopAPI
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.Text.Json.Serialization;
 
     public class Ingredient
     {
@@ -29,10 +27,6 @@ namespace MothAphotheaShopAPI
 
 
         [JsonIgnore]
-        [JsonPropertyName("active_compounds")]
-        public ICollection<ActiveCompound> ActiveCompounds { get; set; } = new List<ActiveCompound>();
-
-        [JsonIgnore]
         [JsonPropertyName("aromas")]
         public ICollection<Aroma> Aromas { get; set; } = new List<Aroma>();
 
@@ -43,8 +37,8 @@ namespace MothAphotheaShopAPI
 
 
         [JsonIgnore]
-        [JsonPropertyName("flavor_profile")]
-        public ICollection<FlavorNote> FlavorProfile { get; set; } = new List<FlavorNote>();
+        [JsonPropertyName("flavor_notes")]
+        public ICollection<FlavorNote> FlavorNotes { get; set; } = new List<FlavorNote>();
 
 
         [JsonIgnore]

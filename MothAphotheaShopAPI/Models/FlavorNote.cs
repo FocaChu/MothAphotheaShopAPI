@@ -12,10 +12,6 @@ namespace MothAphotheaShopAPI
         public string Name { get; set; }
 
 
-        [Required]
-        public string Description { get; set; }
-
-
         [JsonIgnore]
         public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 

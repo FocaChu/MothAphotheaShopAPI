@@ -8,8 +8,6 @@ namespace MothAphotheaShopAPI
         {
         }
 
-        public DbSet<ActiveCompound> ActiveCompounds { get; set; }
-
         public DbSet<Aroma> Aromas { get; set; }
 
         public DbSet<Contraindication> Contraindications { get; set; } 
@@ -47,7 +45,7 @@ namespace MothAphotheaShopAPI
 
             // Ingredient ↔️ FlavorNote
             modelBuilder.Entity<Ingredient>()
-                .HasMany(i => i.FlavorProfile)
+                .HasMany(i => i.FlavorNotes)
                 .WithMany(f => f.Ingredients);
 
             // Ingredient ↔️ Effect
@@ -60,15 +58,36 @@ namespace MothAphotheaShopAPI
                 .HasMany(i => i.Contraindications)
                 .WithMany(c => c.Ingredients);
 
-            // Ingredient ↔️ ActiveCompound
-            modelBuilder.Entity<Ingredient>()
-                .HasMany(i => i.ActiveCompounds)
-                .WithMany(ac => ac.Ingredients);
-
             // Product ↔️ Ingredient (Many-to-Many)
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.IngredientList)
                 .WithMany(i => i.Products);
+
+
+            // Product ↔️ Aroma
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Aromas)
+                .WithMany(a => a.Products);
+
+            // Product ↔️ Texture
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Textures)
+                .WithMany(t => t.Products);
+
+            // Product ↔️ Effect
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Effects)
+                .WithMany(e => e.Products);
+
+            // Product ↔️ FlavorNote
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.FlavorNotes)
+                .WithMany(fn => fn.Products);
+
+            // Product ↔️ Contraindication
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Contraindications)
+                .WithMany(c => c.Products);
         }
 
     }

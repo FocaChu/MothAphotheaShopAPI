@@ -6,10 +6,6 @@ namespace MothAphotheaShopAPI
     {
         public MappingProfile()
         {
-            CreateMap<ActiveCompound, ActiveCompoundDTO>();
-            CreateMap<ActiveCompoundDTO, ActiveCompound>();
-
-
             CreateMap<Aroma, AromaDTO>();
             CreateMap<AromaDTO, Aroma>();
 
@@ -26,41 +22,36 @@ namespace MothAphotheaShopAPI
             CreateMap<FlavorNoteDTO, FlavorNote>();
 
 
-            CreateMap<Ingredient, IngredientCreateDTO>()
+            CreateMap<Ingredient, IngredientInsertDTO>()
                 .ForMember(dest => dest.TypeId, opt => opt.Ignore())
-                .ForMember(dest => dest.ActiveCompoundsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.AromasIds, opt => opt.Ignore())
                 .ForMember(dest => dest.TexturesIds, opt => opt.Ignore())
                 .ForMember(dest => dest.FlavorsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.EffectsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.ContraindicationingsIds, opt => opt.Ignore());
-            CreateMap<IngredientCreateDTO, Ingredient>()
+            CreateMap<IngredientInsertDTO, Ingredient>()
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
-                .ForMember(dest => dest.ActiveCompounds, opt => opt.Ignore())
                 .ForMember(dest => dest.Aromas, opt => opt.Ignore())
                 .ForMember(dest => dest.Textures, opt => opt.Ignore())
-                .ForMember(dest => dest.FlavorProfile, opt => opt.Ignore())
+                .ForMember(dest => dest.FlavorNotes, opt => opt.Ignore())
                 .ForMember(dest => dest.Effects, opt => opt.Ignore())
                 .ForMember(dest => dest.Contraindications, opt => opt.Ignore());
 
 
             CreateMap<Ingredient, IngredientViewDTO>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
-                .ForMember(dest => dest.ActiveCompounds, opt => opt.MapFrom(src => src.ActiveCompounds))
                 .ForMember(dest => dest.Aromas, opt => opt.MapFrom(src => src.Aromas))
                 .ForMember(dest => dest.Textures, opt => opt.MapFrom(src => src.Textures))
-                .ForMember(dest => dest.Flavors, opt => opt.MapFrom(src => src.FlavorProfile))
+                .ForMember(dest => dest.Flavors, opt => opt.MapFrom(src => src.FlavorNotes))
                 .ForMember(dest => dest.Effects, opt => opt.MapFrom(src => src.Effects))
                 .ForMember(dest => dest.Contraindications, opt => opt.MapFrom(src => src.Contraindications));
             CreateMap<IngredientViewDTO, Ingredient>()
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
-                .ForMember(dest => dest.ActiveCompounds, opt => opt.Ignore())
                 .ForMember(dest => dest.Aromas, opt => opt.Ignore())
                 .ForMember(dest => dest.Textures, opt => opt.Ignore())
-                .ForMember(dest => dest.FlavorProfile, opt => opt.Ignore())
+                .ForMember(dest => dest.FlavorNotes, opt => opt.Ignore())
                 .ForMember(dest => dest.Effects, opt => opt.Ignore())
                 .ForMember(dest => dest.Contraindications, opt => opt.Ignore());
-
 
 
             CreateMap<IngredientType, IngredientTypeDTO>();
@@ -70,7 +61,6 @@ namespace MothAphotheaShopAPI
             CreateMap<Product, ProductDTO>()
                 .ForMember(dest => dest.IngridientsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.TypeId, opt => opt.Ignore())
-                .ForMember(dest => dest.ActiveCompoundsIds, opt => opt.Ignore())
                 .ForMember(dest => dest.AromasIds, opt => opt.Ignore())
                 .ForMember(dest => dest.TexturesIds, opt => opt.Ignore())
                 .ForMember(dest => dest.FlavorsIds, opt => opt.Ignore())
@@ -79,7 +69,6 @@ namespace MothAphotheaShopAPI
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.IngredientList, opt => opt.Ignore())
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
-                .ForMember(dest => dest.ActiveCompounds, opt => opt.Ignore())
                 .ForMember(dest => dest.Aromas, opt => opt.Ignore())
                 .ForMember(dest => dest.Textures, opt => opt.Ignore())
                 .ForMember(dest => dest.FlavorNotes, opt => opt.Ignore())

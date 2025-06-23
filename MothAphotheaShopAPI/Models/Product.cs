@@ -36,15 +36,12 @@ namespace MothAphotheaShopAPI
         public string Preparation { get; set; }
 
 
+        [JsonIgnore]
         public ICollection<Purchase> Purchase { get; set; } = new List<Purchase>();
 
 
         [JsonPropertyName("ingredient_list")]
         public ICollection<Ingredient> IngredientList { get; set; } = new List<Ingredient>();
-
-
-        [JsonPropertyName("active_compounds")]
-        public ICollection<ActiveCompound> ActiveCompounds { get; set; } = new List<ActiveCompound>();
 
 
         [JsonPropertyName("aromas")]

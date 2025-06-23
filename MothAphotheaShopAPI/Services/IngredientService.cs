@@ -18,10 +18,9 @@ namespace MothAphotheaShopAPI
         {
             var ingredients = await _context.Ingredients
                 .Include(i => i.Type)
-                .Include(i => i.ActiveCompounds)
                 .Include(i => i.Aromas)
                 .Include(i => i.Textures)
-                .Include(i => i.FlavorProfile)
+                .Include(i => i.FlavorNotes)
                 .Include(i => i.Effects)
                 .Include(i => i.Contraindications)
                 .ToListAsync();
@@ -34,10 +33,9 @@ namespace MothAphotheaShopAPI
         {
             var ingredient = await _context.Ingredients
                 .Include(i => i.Type)
-                .Include(i => i.ActiveCompounds)
                 .Include(i => i.Aromas)
                 .Include(i => i.Textures)
-                .Include(i => i.FlavorProfile)
+                .Include(i => i.FlavorNotes)
                 .Include(i => i.Effects)
                 .Include(i => i.Contraindications)
                 .FirstOrDefaultAsync(i => i.Id == id);
@@ -46,7 +44,7 @@ namespace MothAphotheaShopAPI
         }
 
 
-        public async Task<Ingredient> CreateAsync(IngredientCreateDTO dto)
+        public async Task<Ingredient> CreateAsync(IngredientInsertDTO dto)
         {
             var ingredient = _mapper.Map<Ingredient>(dto);
 
@@ -55,9 +53,6 @@ namespace MothAphotheaShopAPI
                 throw new BusinessException("Ingredient type not found.");
 
             ingredient.Type = type;
-
-            if (dto.ActiveCompoundsIds?.Any() == true)
-                ingredient.ActiveCompounds = await GetAndValidateEntitiesAsync<ActiveCompound>(dto.ActiveCompoundsIds, "Active Compound");
 
 
             if (dto.AromasIds?.Any() == true)
@@ -73,7 +68,7 @@ namespace MothAphotheaShopAPI
 
 
             if (dto.FlavorsIds?.Any() == true)
-                ingredient.FlavorProfile = await GetAndValidateEntitiesAsync<FlavorNote>(dto.FlavorsIds, "Flavor");
+                ingredient.FlavorNotes = await GetAndValidateEntitiesAsync<FlavorNote>(dto.FlavorsIds, "Flavor");
 
 
             if (dto.ContraindicationingsIds?.Any() == true)
@@ -86,14 +81,13 @@ namespace MothAphotheaShopAPI
             return ingredient;
         }
 
-        public async Task<Ingredient?> UpdateAsync(Guid id, IngredientCreateDTO dto)
+        public async Task<Ingredient?> UpdateAsync(Guid id, IngredientInsertDTO dto)
         {
             var existingIngredient = await _context.Ingredients
-                .Include(p => p.ActiveCompounds)
                 .Include(p => p.Aromas)
                 .Include(p => p.Textures)
                 .Include(p => p.Effects)
-                .Include(p => p.FlavorProfile)
+                .Include(p => p.FlavorNotes)
                 .Include(p => p.Contraindications)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -107,15 +101,11 @@ namespace MothAphotheaShopAPI
             _mapper.Map(dto, existingIngredient);
             existingIngredient.Type = type;
 
-            existingIngredient.ActiveCompounds = await GetAndValidateEntitiesAsync<ActiveCompound>(dto.ActiveCompoundsIds, "Active Compound");
-
             existingIngredient.Aromas = await GetAndValidateEntitiesAsync<Aroma>(dto.AromasIds, "Aroma");
 
             existingIngredient.Textures = await GetAndValidateEntitiesAsync<Texture>(dto.TexturesIds, "Texture");
 
             existingIngredient.Effects = await GetAndValidateEntitiesAsync<Effect>(dto.EffectsIds, "Effect");
-
-            existingIngredient.FlavorProfile = await GetAndValidateEntitiesAsync<FlavorNote>(dto.FlavorsIds, "Flavor");
 
             existingIngredient.Contraindications = await GetAndValidateEntitiesAsync<Contraindication>(dto.ContraindicationingsIds, "Contraindication");
 
@@ -123,7 +113,7 @@ namespace MothAphotheaShopAPI
             return existingIngredient;
         }
 
-        public async Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientCreateDTO dto)
+        public async Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientInsertDTO dto)
         {
             var existingIngredient = await _context.Ingredients
                 .Include(p => p.Type) 
@@ -138,22 +128,6 @@ namespace MothAphotheaShopAPI
 
             _mapper.Map(dto, existingIngredient);
             existingIngredient.Type = type;
-
-            await _context.SaveChangesAsync();
-            return existingIngredient;
-        }
-
-        public async Task<Ingredient?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds)
-        {
-            var existingIngredient = await _context.Ingredients
-                .Include(p => p.ActiveCompounds)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (existingIngredient == null)
-                return null;
-
-            var activeCompoundsList = await GetAndValidateEntitiesAsync<ActiveCompound>(activeCompoundsIds, "Active Compound");
-            existingIngredient.ActiveCompounds = activeCompoundsList;
 
             await _context.SaveChangesAsync();
             return existingIngredient;
@@ -210,14 +184,14 @@ namespace MothAphotheaShopAPI
         public async Task<Ingredient?> UpdateFlavorNotesAsync(Guid id, List<Guid> flavorNotesIds)
         {
             var existingIngredient = await _context.Ingredients
-                .Include(p => p.FlavorProfile)
+                .Include(p => p.FlavorNotes)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (existingIngredient == null)
                 return null;
 
             var flavorsList = await GetAndValidateEntitiesAsync<FlavorNote>(flavorNotesIds, "Flavor");
-            existingIngredient.FlavorProfile = flavorsList;
+            existingIngredient.FlavorNotes = flavorsList;
 
             await _context.SaveChangesAsync();
             return existingIngredient;

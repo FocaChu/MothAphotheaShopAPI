@@ -6,13 +6,11 @@
 
         Task<IngredientViewDTO?> GetByIdAsync(Guid id);
 
-        Task<Ingredient> CreateAsync(IngredientCreateDTO dto);
+        Task<Ingredient> CreateAsync(IngredientInsertDTO dto);
 
-        Task<Ingredient?> UpdateAsync(Guid id, IngredientCreateDTO dto);
+        Task<Ingredient?> UpdateAsync(Guid id, IngredientInsertDTO dto);
 
-        Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientCreateDTO dto);
-
-        Task<Ingredient?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds);
+        Task<Ingredient?> UpdateSimpleAsync(Guid id, IngredientInsertDTO dto);
 
         Task<Ingredient?> UpdateAromasAsync(Guid id, List<Guid> aromasIds);
 

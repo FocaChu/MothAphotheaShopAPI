@@ -1,9 +1,35 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using MothAphotheaShopAPI;
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+    };
+});
+
 // Add services to the container.
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -50,6 +76,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<MothAphotheaShopAPI.ExceptionMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

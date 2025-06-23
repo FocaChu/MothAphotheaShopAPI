@@ -12,8 +12,6 @@
 
         Task<Product?> UpdateSimpleAsync(Guid id, ProductDTO dto);
 
-        Task<Product?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds);
-
         Task<Product?> UpdateAromasAsync(Guid id, List<Guid> aromaIds);
 
         Task<Product?> UpdateTexturesAsync(Guid id, List<Guid> texturesIds);

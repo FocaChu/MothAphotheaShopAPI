@@ -56,10 +56,6 @@ namespace MothAphotheaShopAPI
                 product.IngredientList = await GetAndValidateEntitiesAsync<Ingredient>(dto.IngridientsIds, "Ingredient");
 
 
-            if (dto.ActiveCompoundsIds?.Any() == true)
-                product.ActiveCompounds = await GetAndValidateEntitiesAsync<ActiveCompound>(dto.ActiveCompoundsIds, "Active Compound");
-
-
             if (dto.AromasIds?.Any() == true)
                 product.Aromas = await GetAndValidateEntitiesAsync<Aroma>(dto.AromasIds, "Aroma");
 
@@ -89,7 +85,6 @@ namespace MothAphotheaShopAPI
         {
             var existingProduct = await _context.Products
                 .Include(p => p.IngredientList)
-                .Include(p => p.ActiveCompounds)
                 .Include(p => p.Aromas)
                 .Include(p => p.Textures)
                 .Include(p => p.Effects)
@@ -108,8 +103,6 @@ namespace MothAphotheaShopAPI
             existingProduct.Type = type;
 
             existingProduct.IngredientList = await GetAndValidateEntitiesAsync<Ingredient>(dto.IngridientsIds, "Ingredient");
-
-            existingProduct.ActiveCompounds = await GetAndValidateEntitiesAsync<ActiveCompound>(dto.ActiveCompoundsIds, "Active Compound");
 
             existingProduct.Aromas = await GetAndValidateEntitiesAsync<Aroma>(dto.AromasIds, "Aroma");
 
@@ -156,22 +149,6 @@ namespace MothAphotheaShopAPI
 
             var ingredientsList = await GetAndValidateEntitiesAsync<Ingredient>(ingredientsIds, "Ingredient");
             existingProduct.IngredientList = ingredientsList;
-
-            await _context.SaveChangesAsync();
-            return existingProduct;
-        }
-
-        public async Task<Product?> UpdateActiveCompoundsAsync(Guid id, List<Guid> activeCompoundsIds)
-        {
-            var existingProduct = await _context.Products
-                .Include(p => p.ActiveCompounds)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (existingProduct == null)
-                return null;
-
-            var activeCompoundsList = await GetAndValidateEntitiesAsync<ActiveCompound>(activeCompoundsIds, "Active Compound");
-            existingProduct.ActiveCompounds = activeCompoundsList;
 
             await _context.SaveChangesAsync();
             return existingProduct;

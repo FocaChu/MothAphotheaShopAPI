@@ -21,10 +21,6 @@ namespace MothAphotheaShopAPI
         public string Description { get; set; }
 
 
-        [JsonPropertyName("active_compounds")]
-        public List<ActiveCompound> ActiveCompounds { get; set; } = new List<ActiveCompound>();
-
-
         [JsonPropertyName("aromas")]
         public List<Aroma> Aromas { get; set; } = new List<Aroma>();
 

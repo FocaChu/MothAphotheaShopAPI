@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MothAphotheaShopAPI.Controllers
 {
@@ -22,7 +19,7 @@ namespace MothAphotheaShopAPI.Controllers
             Ok(await _service.GetAllAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _service.GetByIdAsync(id);
 
@@ -40,7 +37,7 @@ namespace MothAphotheaShopAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] TDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -50,7 +47,7 @@ namespace MothAphotheaShopAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var success = await _service.DeleteAsync(id);
 

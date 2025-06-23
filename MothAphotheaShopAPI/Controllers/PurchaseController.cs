@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MothAphotheaShopAPI
 {
@@ -23,7 +22,7 @@ namespace MothAphotheaShopAPI
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPurchaseById(int id)
+        public async Task<IActionResult> GetPurchaseById(Guid id)
         {
             var purchase = await _service.GetByIdAsync(id);
 

@@ -22,9 +22,5 @@ namespace MothAphotheaShopAPI
 
         [JsonIgnore]
         public ICollection<Product> Products { get; set; } = new List<Product>();
-
-
-        [JsonIgnore]
-        public ICollection<ActiveCompound> ActiveCompounds { get; set; } = new List<ActiveCompound>();
     }
 }

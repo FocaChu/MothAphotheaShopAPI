@@ -37,9 +37,6 @@ namespace MothAphotheaShopAPI
         public List<Guid> IngridientsIds { get; set; } = new List<Guid>();
 
 
-        public List<Guid> ActiveCompoundsIds { get; set; } = new List<Guid>();
-
-
         public List<Guid> AromasIds { get; set; } = new List<Guid>();
 
 
